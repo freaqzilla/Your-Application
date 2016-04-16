@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Field details</title>
+    <h2>Field details</h2>
+<script type="text/javascript" src="<?php echo base_url().'assets/js/jquery-1.7.2.min.js'; ?>"></script>
+</head>
+<body>
+    <?php
+    
+$data_name = array(
+'id' => 'name',
+'readonly' => 'readonly'
+);
+
+$data_status_active = array(
+'value' => 'Active',
+'readonly' => 'readonly'
+);
+
+$data_status_inactive = array(
+'value' => 'Inactive',
+'readonly' => 'readonly'
+);
+
+$data_type = array(
+'String' => 'String',
+'Numeric' => 'Numeric',
+'Date' => 'Date'
+);
+
+$data_mandatory = array(
+'value' => 'Required'
+);
+
+$data_not_mandatory = array(
+'value' => 'Not Required'
+);
+
+echo form_open('field/add');
+    foreach ($userFields as $field) {
+
+echo form_hidden( $field->description, $field->field_id);
+
+echo form_label('Field Name: ');
+$data_name['value'] = $field->description;
+$data_name['name'] = 'description_' . $field->field_id;
+echo form_input($data_name);
+
+echo form_label('Field Status: ');
+$data_status_active['name'] = 'status_' . $field->field_id;
+$data_status_inactive['name'] = 'status_' . $field->field_id;
+	if ($field->status === '1') {
+	$data_status_active['checked'] = TRUE;
+$data_status_inactive['checked'] = FALSE;
+} else {
+	$data_status_inactive['checked'] = TRUE;
+$data_status_active['checked'] = FALSE;
+}
+echo form_label('Active');
+echo form_radio($data_status_active);
+echo form_label('Inactive');
+echo form_radio($data_status_inactive);
+
+echo form_label('Field Type: ');
+echo form_dropdown('field_type_' . $field->field_id, $data_type, $field->field_type);
+
+echo form_label('Field Mandatory: ');
+$data_mandatory['name'] = 'required_' . $field->field_id;
+$data_not_mandatory['name'] = 'required_' . $field->field_id;
+if ($field->mandatory === '1') {
+	$data_mandatory['checked'] = TRUE;
+$data_not_mandatory['checked'] = FALSE;
+} else {
+	$data_not_mandatory['checked'] = TRUE;
+$data_mandatory['checked'] = FALSE;
+}
+echo form_label('Required');
+echo form_radio($data_mandatory);
+echo form_label('Not Required');
+echo form_radio($data_not_mandatory);
+
+$delete_button_data = array(
+    'name' => 'button',
+    'id' => 'delete_button',
+    'value' => $field->field_id,
+    'content' => 'Delete field'
+);
+echo form_button($delete_button_data);
+
+echo '</br>';
+echo '</br>';
+    }
+$add_button_data = array(
+    'name' => 'button',
+    'id' => 'add_button',
+    'content' => 'Add new field'
+);
+echo form_button($add_button_data);
+    echo form_submit('mysubmit', 'Submit');
+ 
+echo form_close();
+    ?>
+</body>
+<script>
+$('document').ready(function(){
+$("#delete_button").click(function()
+    {
+alert('dasdas');
+var delete_id = $('this').val();
+console.log(delete_id);
+     $.ajax({
+         type: "POST",
+         url: base_url + "chat/post_action", 
+         data: {textbox: $("#textbox").val()},
+         dataType: "text",
+         success: 
+              function(data){
+                alert(data);  //as a debugging message.
+              }
+          });// you have missed this bracket
+     return false;
+ });
+});
+
+</script>
+</html>
