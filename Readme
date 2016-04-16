@@ -1,3 +1,12 @@
+INSTALLATION INSTRUCTIONS FOR DEV ASSESSMENT
+
 Configuration changes:
 
-1. 
+1. Change database configuration in /application/config/database.php
+   - hostname
+   - username
+   - password
+   - database
+   
+2. Change base_url in /application/config/config.php
+   - $config['base_url'] to your own URL or localhost.
