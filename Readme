@@ -10,3 +10,5 @@ Configuration changes:
    
 2. Change base_url in /application/config/config.php
    - $config['base_url'] to your own URL or localhost.
+   
+3. Change paths to system and application folders in index.php (root directory)
