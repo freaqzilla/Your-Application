@@ -1,3 +1,5 @@
 <?php
-define('COMPANY_NAME','DFbuilder.com');
+return [
+    'company_name' => 'MyKitchen'
+]
 ?>

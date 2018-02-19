@@ -12,12 +12,7 @@ use View;
 class AdminController extends Controller
 {
 	public function index() {
-		if (View::exists('admin.users')) {
-			return view('admin.users');
-		} else {
-			var_dump('no view');
-			exit;
-		}
+		return view('admin.users');
 		
 	}
 }

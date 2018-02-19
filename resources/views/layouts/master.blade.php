@@ -1,34 +1,86 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!-- Ionicons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
 
-            <title>{!! COMPANY_NAME !!}</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Theme style -->
-        <link rel="stylesheet" href="/css/custom_styles.css?rnd{!! time() !!}">
-        <link rel="stylesheet" href="/js/jquery.js">
+    <title>{{ config('core.company_name', 'Laravel') }}</title>
 
+    <!-- Styles -->
+    <link href="/css/app.css?time={!! time() !!}" rel="stylesheet">
 
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-                <div class="top-right links">
-                        <a href="{{ url('/home') }}">Home</a>
-                </div>
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
+</head>
+<body>
+<div id="app">
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{{ url('/') }}">
+            {{ config('core.company_name', 'Laravel') }}
+        </a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                @if (Auth::guest())
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}">Register</a></li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false">
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a class="nav-link" href="{{ url('/logout') }}"
+                                   onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                      style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+            </ul>
         </div>
-        <div class="content-wrapper">
-            <section class="content">
-                @yield('content')
-            </section>
-        </div>
-    </body>
+    </nav>
+
+    @yield('content')
+</div>
+
+<!-- Scripts -->
+<script src="/js/app.js?time={!! time() !!}"></script>
+</body>
 </html>
