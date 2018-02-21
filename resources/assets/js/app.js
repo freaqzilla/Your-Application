@@ -21,6 +21,8 @@ Vue.component('admin-component', require('./components/AdminComponent.vue'));
 
 Vue.component('test-component', require('./components/TestComponent.vue'));
 
+Vue.component('register-component', require('./components/RegisterComponent.vue'));
+
 const app = new Vue({
     el: '#app'
 });

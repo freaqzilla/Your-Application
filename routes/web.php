@@ -21,3 +21,7 @@ Route::namespace('Admin')->group(function () {
 	Route::get('admin', 'AdminController@index');
 
 });
+
+
+Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+
