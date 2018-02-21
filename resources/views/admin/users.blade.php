@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master', ['vueView' => 'test-component'])
 @section('content')
-<example-component></example-component>
+
 @stop

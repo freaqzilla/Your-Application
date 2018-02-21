@@ -76,8 +76,9 @@
             </ul>
         </div>
     </nav>
-
-    @yield('content')
+    <component is="{{ $vueView }}">
+        @yield('content')
+    </component>
 </div>
 
 <!-- Scripts -->

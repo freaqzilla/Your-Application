@@ -15,4 +15,9 @@ class AdminController extends Controller
 		return view('admin.users');
 		
 	}
+
+	public function list() {
+		return view('admin.users');
+		
+	}
 }

@@ -1,6 +1,6 @@
 <script>
     export default {
-        created() {
+        mounted() {
             alert('Hello from the about view component');
         }
     }

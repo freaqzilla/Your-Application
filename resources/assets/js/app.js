@@ -17,6 +17,10 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
+Vue.component('admin-component', require('./components/AdminComponent.vue'));
+
+Vue.component('test-component', require('./components/TestComponent.vue'));
+
 const app = new Vue({
     el: '#app'
 });
