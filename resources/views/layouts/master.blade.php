@@ -13,8 +13,9 @@
     <title>{{ config('core.company_name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css?time={!! time() !!}" rel="stylesheet">
-
+    
+    <link href="/css/app.css" rel="stylesheet">
+    <!-- <link href="/css/theme/bootstrap.css?time={!! time() !!}" rel="stylesheet"> -->
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -23,59 +24,48 @@
     </script>
 </head>
 <body>
-<div id="app">
-
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<div class="container" id="app">
+<nav class="navbar navbar-inverse">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('core.company_name', 'Laravel') }}
-        </a>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                @if (Auth::guest())
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}">Register</a></li>
-                @else
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
-
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a class="nav-link" href="{{ url('/logout') }}"
-                                   onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                      style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-            </ul>
-        </div>
-    </nav>
+        <a href="#" class="navbar-brand">Brand</a>
+    </div>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Profile</a></li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">Messages <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Inbox</a></li>
+                    <li><a href="#">Drafts</a></li>
+                    <li><a href="#">Sent Items</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Trash</a></li>
+                </ul>
+            </li>
+        </ul>
+        <form class="navbar-form navbar-left">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Login</a></li>
+        </ul>
+    </div>
+</nav>
+    
     <component is="{{ $vueView }}">
         @yield('content')
     </component>
