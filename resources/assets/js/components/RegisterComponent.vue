@@ -91,7 +91,8 @@
 			registerUser() {
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-						console.log('submit form');
+						axios.post('/add-user', 
+    {postData: this.user}).then(response => console.log('response: ', JSON.stringify(response, null, 2)));
 					}
 				})
 				

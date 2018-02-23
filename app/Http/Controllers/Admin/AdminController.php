@@ -12,6 +12,8 @@ use View;
 class AdminController extends Controller
 {
 	public function index() {
+		var_dump('dasdsada');
+		exit;
 		return view('admin.users');
 		
 	}
