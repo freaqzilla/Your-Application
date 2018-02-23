@@ -23,6 +23,14 @@ Vue.component('test-component', require('./components/TestComponent.vue'));
 
 Vue.component('register-component', require('./components/RegisterComponent.vue'));
 
+// Import plugin for form validation
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+    // declare message with an empty value
+    name: ''
+  }
 });
