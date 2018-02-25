@@ -22,6 +22,15 @@ Route::namespace('Admin')->group(function () {
 
 });
 
+// route to show the registration form
+Route::get('/register', 'Auth\RegisterController@showRegistrationForm');
+// route to process the registration form
+Route::post('/add-user', 'Auth\RegisterController@register');
+// route to show the login form
+Route::get('/login', 'Auth\LoginController@showLoginForm');
+// route to process login form
+Route::get('/login-user', 'Auth\LoginController@LoginUser');
 
-Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+Auth::routes();
 
+Route::get('/home', 'HomeController@index')->name('home');

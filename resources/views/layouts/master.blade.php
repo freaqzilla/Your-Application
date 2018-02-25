@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.ico">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
 
     <title>{{ config('core.company_name', 'Laravel') }}</title>
 
@@ -61,11 +61,23 @@
             </div>
         </form>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Login</a></li>
+        @if (Auth::guest())
+        <li><a href="{{ route('login') }}">Login</a></li>
+                @else
+                <li><a href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                    Logout
+                </a></li>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+
+                @endif
         </ul>
     </div>
 </nav>
-    
     <component is="{{ $vueView }}">
         @yield('content')
     </component>
@@ -73,5 +85,8 @@
 
 <!-- Scripts -->
 <script src="/js/app.js?time={!! time() !!}"></script>
+<script>
+window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>
+</script>
 </body>
 </html>

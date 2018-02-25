@@ -6,8 +6,7 @@
             User added successfully!
         </div>
     	<!--  prevent the page from refreshing after submission -->
-		<form role="form"  @submit="registerUser" action="/register" method="POST" novalidate>
-		<input type="hidden" name="_token" :value="$csrf_token">
+		<form role="form"  @submit.prevent="registerUser" method="POST" novalidate>
 			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
 			<!-- add Bootstrap .has-error if title field has errors -->
 			<div class="alert alert-danger" v-if="formErrors.length > 0">
@@ -90,18 +89,17 @@
     		}
     	},
 		methods: {
-			registerUser: function(e) {
-				// var errors = [];
-				// this.formErrors = [];
-				// this.isNewUserAdded = false;
+			registerUser() {
+				console.log(this.token);
+				var errors = [];
+				this.formErrors = [];
+				this.isNewUserAdded = false;
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-						var formAction = e.target.action;
-						axios.post(formAction, 
-    					this.user)
+						axios.post('/add-user', 
+    					{ postData: this.user })
 						.then((response) => {
 							response = response.data;
-							console.log(response);
 							if (!response.success) {
 								$.each(response.errors, function(fieldName, error){
 									errors.push(error[0]);
@@ -116,8 +114,8 @@
 							console.log(error)
 							// formErrors.push(JSON.parse(error));
 						);
+							
 					}
-					event.preventDefault();
 				})
 				
 			}

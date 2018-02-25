@@ -5,9 +5,12 @@
         <div v-if="isNewUserAdded" class="alert alert-success">
             User added successfully!
         </div>
+		
+      <span class="help">
+       {{errors.name[0]}}
+      </span>
     	<!--  prevent the page from refreshing after submission -->
-		<form role="form"  @submit="registerUser" action="/register" method="POST" novalidate>
-		<input type="hidden" name="_token" :value="$csrf_token">
+		<form role="form"  @submit="registerUser" method="POST" novalidate>
 			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
 			<!-- add Bootstrap .has-error if title field has errors -->
 			<div class="alert alert-danger" v-if="formErrors.length > 0">
@@ -90,14 +93,13 @@
     		}
     	},
 		methods: {
-			registerUser: function(e) {
-				// var errors = [];
-				// this.formErrors = [];
-				// this.isNewUserAdded = false;
+			registerUser() {
+				var errors = [];
+				this.formErrors = [];
+				this.isNewUserAdded = false;
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-						var formAction = e.target.action;
-						axios.post(formAction, 
+						axios.post('/register', 
     					this.user)
 						.then((response) => {
 							response = response.data;
@@ -116,8 +118,8 @@
 							console.log(error)
 							// formErrors.push(JSON.parse(error));
 						);
+							
 					}
-					event.preventDefault();
 				})
 				
 			}

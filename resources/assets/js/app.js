@@ -27,10 +27,12 @@ Vue.component('register-component', require('./components/RegisterComponent.vue'
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
+var csrf_token = $('meta[name="csrf-token"]').attr('content');
+Vue.prototype.$csrf_token = csrf_token;
+
 const app = new Vue({
     el: '#app',
     data: {
-    // declare message with an empty value
-    name: ''
+
   }
 });
