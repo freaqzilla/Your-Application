@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
     	 <!-- this will be displayed upon successful submission of form -->
-        <div class="alert alert-success">
+        <div v-if="isNewUserAdded" class="alert alert-success">
             User added successfully!
         </div>
     	<!--  prevent the page from refreshing after submission -->
@@ -46,7 +46,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group" :class="{'input': true, 'has-error': errors.has('password_confirmation') }">
-						<input type="password" v-validate="'required'" name="password_confirmation" v-model="user.confirmPassword" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6">
+						<input type="password" v-validate="'required'" name="password_confirmation" v-model="user.password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password" tabindex="6">
 						<span v-show="errors.has('password_confirmation')" class="help-block">{{ errors.first('password_confirmation') }}</span>
 					</div>
 				</div>
@@ -75,24 +75,45 @@
     export default {
     	data() {
     		return {
+				formErrors: [],
+				isFormValid: false,
+				isNewUserAdded: false,
 				user: {
 					firstName: null,
 					lastName: null,
 					displayName: null,
 					email: null,
 					password: null,
-					confirmPassword: null
-				},
-				formErrors: [],
-				isFormValid: false
+					password_confirmation: null
+				}
     		}
     	},
 		methods: {
 			registerUser() {
+				var errors = [];
+				this.formErrors = [];
+				this.isNewUserAdded = false;
 				this.$validator.validateAll().then((result) => {
 					if (result) {
 						axios.post('/add-user', 
-    {postData: this.user}).then(response => console.log('response: ', JSON.stringify(response, null, 2)));
+    					{ postData: this.user })
+						.then((response) => {
+							response = response.data;
+							if (!response.success) {
+								$.each(response.errors, function(fieldName, error){
+									errors.push(error[0]);
+								});
+								this.formErrors = errors;
+							} else {
+								this.isNewUserAdded = true;
+							}
+						})
+						.catch(error => 
+							// var errors = JSON.parse(error);
+							console.log(error)
+							// formErrors.push(JSON.parse(error));
+						);
+							
 					}
 				})
 				
