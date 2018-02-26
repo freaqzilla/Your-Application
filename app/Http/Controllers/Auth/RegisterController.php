@@ -29,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = 'login';
 
     /**
      * Create a new controller instance.
@@ -70,29 +70,6 @@ class RegisterController extends Controller
             'name' => $data['first_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ]);
-    }
-
-    protected function addNewUser(Request $request)
-    {
-        $validateFormData = $this->validator($request->input('postData'));
-        if ($validateFormData->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validateFormData->errors(),
-                'data' => []
-            ]);
-        }
-        $data = $request->input('postData');
-        $responseData = User::create([
-            'name' => $data['firstName'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        return response()->json([
-            'success' => true,
-            'errors' => [],
-            'data' => $responseData
         ]);
     }
 }

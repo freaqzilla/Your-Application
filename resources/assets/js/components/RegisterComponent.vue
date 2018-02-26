@@ -19,19 +19,19 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group" :class="{'input': true, 'has-error': errors.has('first_name') }">
-                        <input type="text" name="first_name" v-validate="'required'" required minlength="3" v-model="user.firstName" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
+                        <input type="text" name="first_name" v-validate="'required'" required minlength="3" v-model="user.first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
 						<span v-show="errors.has('first_name')" class="help-block">{{ errors.first('first_name') }}</span>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group" :class="{'input': true, 'has-error': errors.has('last_name') }">
-						<input type="text" name="last_name" v-model="user.lastName" v-validate="'required'" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
+						<input type="text" name="last_name" v-model="user.last_name" v-validate="'required'" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
 						<span v-show="errors.has('last_name')" class="help-block">{{ errors.first('last_name') }}</span>
 					</div>
 				</div>
 			</div>
 			<div class="form-group" :class="{'input': true, 'has-error': errors.has('display_name') }">
-				<input type="text" data-vv-as="Display Name" name="display_name" id="display_name" v-validate="'required'" v-model="user.displayName" class="form-control input-lg" placeholder="Display Name" tabindex="3">
+				<input type="text" data-vv-as="Display Name" name="display_name" id="display_name" v-validate="'required'" v-model="user.display_name" class="form-control input-lg" placeholder="Display Name" tabindex="3">
 				<span v-show="errors.has('display_name')" class="help-block">{{ errors.first('display_name') }}</span>
 			</div>
 			<div class="form-group" :class="{'input': true, 'has-error': errors.has('email') }">
@@ -80,9 +80,9 @@
 				isFormValid: false,
 				isNewUserAdded: false,
 				user: {
-					firstName: null,
-					lastName: null,
-					displayName: null,
+					first_name: null,
+					last_name: null,
+					display_name: null,
 					email: null,
 					password: null,
 					password_confirmation: null
@@ -91,31 +91,27 @@
     	},
 		methods: {
 			registerUser: function(e) {
-				// var errors = [];
-				// this.formErrors = [];
-				// this.isNewUserAdded = false;
+				this.formErrors = [];
+				this.isNewUserAdded = false;
 				this.$validator.validateAll().then((result) => {
 					if (result) {
 						var formAction = e.target.action;
 						axios.post(formAction, 
     					this.user)
 						.then((response) => {
-							response = response.data;
-							console.log(response);
-							if (!response.success) {
-								$.each(response.errors, function(fieldName, error){
-									errors.push(error[0]);
-								});
-								this.formErrors = errors;
-							} else {
-								this.isNewUserAdded = true;
-							}
+							this.isNewUserAdded = true;
+							window.location = response.data.redirect;
 						})
-						.catch(error => 
-							// var errors = JSON.parse(error);
-							console.log(error)
-							// formErrors.push(JSON.parse(error));
-						);
+						.catch((error) => {
+							console.log(error.response);
+							var errors = [];
+							$.each(error.response.data.errors, function(fieldName, error)
+							{
+								errors.push(error[0]);
+							});
+							this.formErrors = errors;
+							this.isNewUserAdded = false;
+						});
 					}
 					event.preventDefault();
 				})

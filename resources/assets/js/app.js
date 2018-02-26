@@ -23,6 +23,12 @@ Vue.component('test-component', require('./components/TestComponent.vue'));
 
 Vue.component('register-component', require('./components/RegisterComponent.vue'));
 
+Vue.component('login-component', require('./components/LoginComponent.vue'));
+
+Vue.component('home-component', require('./components/HomeComponent.vue'));
+
+Vue.component('public-app-component', require('./components/PublicAppComponent.vue'));
+
 // Import plugin for form validation
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
