@@ -16,21 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::namespace('Admin')->group(function () {
-    // Controllers Within The "App\Http\Controllers\Admin" Namespace
-	Route::get('admin', 'AdminController@index');
-
-});
-
-// route to show the registration form
-// Route::get('/register', 'Auth\RegisterController@showRegistrationForm');
-// route to process the registration form
-// Route::post('/add-user', 'Auth\RegisterController@register');
-// route to show the login form
-// Route::get('/login', 'Auth\LoginController@showLoginForm');
-// route to process login form
-// Route::get('/login-user', 'Auth\LoginController@LoginUser');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Route::get('admin', function ($id) {
+//     //
+// })->middleware('role:editor');
+
+// Route::get('/admin', 'Admin\AdminController@index');
+
+Route::get('admin', ['middleware' => 'role', 'uses' => 'Admin\AdminController@index']);
