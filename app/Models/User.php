@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use \App\Models\Role;
+use \App\Repositories\UserRepositoryInterface as UserRepository;
 
-class User extends Authenticatable
+class User extends Authenticatable implements UserRepository 
 {
     use Notifiable;
 
@@ -72,5 +73,15 @@ class User extends Authenticatable
         $role = 'super admin';
         return null !== $this->roles()->where('name', $role)->first();
     }
+
+    public function selectAll()
+	{
+		return User::all();
+	}
+	
+	public function find($id)
+	{
+		return User::find($id);
+	}
 
 }

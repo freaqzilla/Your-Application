@@ -1,4 +1,3 @@
-@extends('layouts.master', ['vueView' => 'test-component'])
+@extends('layouts.master', ['vueView' => 'admin-component'])
 @section('content')
-
 @stop

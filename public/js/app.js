@@ -45610,7 +45610,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(55)
 /* template */
-var __vue_template__ = null
+var __vue_template__ = __webpack_require__(83)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45654,10 +45654,36 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        alert('Hello from the about view component');
+    data: function data() {
+        return {
+            allUsers: null
+        };
+    },
+    created: function created() {
+        this.fetchData();
+    },
+
+    methods: {
+        fetchData: function fetchData() {
+            var _this = this;
+
+            this.error = this.users = null;
+            this.loading = true;
+            axios.get('/admin/get-all-users').then(function (response) {
+                _this.allUsers = response.data;
+            });
+        }
     }
 });
 
@@ -54000,6 +54026,46 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-2c896648", module.exports)
+  }
+}
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      {
+        staticClass:
+          "col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3"
+      },
+      [
+        _c(
+          "ul",
+          _vm._l(_vm.allUsers, function(user) {
+            return _c(
+              "a",
+              { attrs: { href: "/admin/update-user/" + user.id } },
+              [_c("li", [_vm._v(_vm._s(user.name))])]
+            )
+          })
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-18f46165", module.exports)
   }
 }
 

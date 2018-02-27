@@ -20,10 +20,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Route::get('admin', function ($id) {
-//     //
-// })->middleware('role:editor');
-
-// Route::get('/admin', 'Admin\AdminController@index');
-
-Route::get('admin', ['middleware' => 'role', 'uses' => 'Admin\AdminController@index']);
+Route::middleware(['auth', 'role'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/', 'Admin\AdminController@index');
+        Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
+    });
+});
