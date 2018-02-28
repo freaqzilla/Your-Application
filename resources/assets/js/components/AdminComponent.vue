@@ -1,8 +1,26 @@
 <template>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+        <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(user, key) in allUsers">
+      <th scope="row">{{key + 1}}.</th>
+      <td><a :href="'/admin/get-user/'+user.id">{{ user.name}}</a></td>
+      <td>{{ user.email}}</td>
+      <td>@mdo</td>
+    </tr>
+  </tbody>
+</table>
         <ul>
-            <a v-for="user in allUsers" :href="'/admin/update-user/'+user.id"><li>{{ user.name}}</li></a>
+            
         </ul>
 	</div>
 </div>
