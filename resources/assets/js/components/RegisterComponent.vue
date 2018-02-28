@@ -99,6 +99,7 @@
 						axios.post(formAction, 
     					this.user)
 						.then((response) => {
+							console.log(response);
 							this.isNewUserAdded = true;
 							window.location = response.data.redirect;
 						})
