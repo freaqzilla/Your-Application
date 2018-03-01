@@ -162,7 +162,7 @@ return [
         /*
          * Repository Service Provider...
          */
-        App\Providers\RepositoryServiceProvider::class,
+        // App\Providers\RepositoryServiceProvider::class,
 
     ],
 

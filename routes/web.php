@@ -24,7 +24,8 @@ Route::middleware(['auth', 'role'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', 'Admin\AdminController@index');
         Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
+        Route::get('/update-user/{id}', 'Admin\AdminController@showUser');
         Route::get('/get-user/{id}', 'Admin\AdminController@getUser');
-        Route::post('/update-user/{id}', 'Admin\AdminController@updateUser');
+        Route::post('/update-user', 'Admin\AdminController@updateUser');
     });
 });

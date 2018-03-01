@@ -13,7 +13,7 @@
   <tbody>
     <tr v-for="(user, key) in allUsers">
       <th scope="row">{{key + 1}}.</th>
-      <td><a :href="'/admin/get-user/'+user.id">{{ user.name}}</a></td>
+      <td><a :href="'/admin/update-user/'+user.id">{{ user.name}}</a></td>
       <td>{{ user.email}}</td>
       <td>@mdo</td>
     </tr>
