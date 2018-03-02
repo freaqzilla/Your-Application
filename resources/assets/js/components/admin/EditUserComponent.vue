@@ -1,7 +1,7 @@
 <template>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-<user-form>
+<user-form :action="formAction" :my-object="myObject">
 		</user-form>
 	</div>
 </div>
@@ -9,6 +9,18 @@
 <script>
 import UserForm from '../../components/user/UserForm'
 export default {
+  data() {
+    return {
+      user: {
+      first_name: 'test',
+      last_name: 'test2'
+    },
+      formAction: '/admin/edit-user'
+    }
+  },
+  computed: {
+          myObject() { return this.user; }
+      },
   components: {
     'user-form': UserForm
   }

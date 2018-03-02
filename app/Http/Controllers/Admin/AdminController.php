@@ -35,8 +35,15 @@ class AdminController extends Controller
 		return view('admin.editUser');
 	}
 
-		public function getUser($userId) {
-			$user = $this->user->find($userId)->load('roles');
-			return $user;
-		}
+	public function getUser($userId) {
+		$user = $this->user->find($userId)->load('roles');
+		return $user;
+	}
+
+	public function editUser(Request $request) {
+		var_dump('reached');
+		exit;
+		// $user = $this->user->find($userId)->load('roles');
+		// return $user;
+	}
 }

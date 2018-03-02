@@ -1,6 +1,6 @@
 <template>
 <!--  prevent the page from refreshing after submission -->
-		<form role="form"  @submit="registerUser" action="/register" method="POST" novalidate>
+		<form role="form"  @submit="registerUser" method="POST" novalidate>
 		<input type="hidden" name="_token" :value="$csrf_token">
 			<h2>Please Sign Up <small>It's free and always will be.</small></h2>
 			<!-- add Bootstrap .has-error if title field has errors -->
@@ -13,7 +13,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<div class="form-group" :class="{'input': true, 'has-error': errors.has('first_name') }">
-                        <input type="text" name="first_name" v-validate="'required'" required minlength="3" v-model="user.first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
+						<input type="text" name="first_name" v-validate="'required'" required minlength="3" v-model="user.first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
 						<span v-show="errors.has('first_name')" class="help-block">{{ errors.first('first_name') }}</span>
 					</div>
 				</div>
@@ -51,7 +51,6 @@
 					 By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site, including our Cookie Use.
 				</div>
 			</div>
-			
 			<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-md-6">
@@ -61,49 +60,59 @@
 					<a href="#" class="btn btn-success btn-block btn-lg">Sign In</a>
 				</div>
 			</div>
+			<input type="hidden" value="" class="btn btn-primary btn-block btn-lg" tabindex="7">
 		</form>
 		</template>
 		<script>
 export default {
-  data () {
+  data() {
     return {
-      searchText: '',
+      searchText: "",
       user: {},
       selectedOption: null,
       open: false,
       formErrors: [],
       highlightIndex: 0,
-      lastSearchText: ''
+      lastSearchText: ""
+    };
+  },
+  props: {
+    myObject: Object
+  },
+  created() {
+    if (this.myObject) {
+      console.log(this.myObject.first_name);
     }
   },
+
   methods: {
-			registerUser: function(e) {
-				this.formErrors = [];
-				this.isNewUserAdded = false;
-				this.$validator.validateAll().then((result) => {
-					if (result) {
-						var formAction = e.target.action;
-						axios.post(formAction, 
-    					this.user)
-						.then((response) => {
-							console.log(response);
-							this.isNewUserAdded = true;
-							window.location = response.data.redirect;
-						})
-						.catch((error) => {
-							console.log(error.response);
-							var errors = [];
-							$.each(error.response.data.errors, function(fieldName, error)
-							{
-								errors.push(error[0]);
-							});
-							this.formErrors = errors;
-							this.isNewUserAdded = false;
-						});
-					}
-					event.preventDefault();
-				})
-			}
-		}
-}
+    registerUser: function(e) {
+      event.preventDefault();
+      return false;
+      this.formErrors = [];
+      this.isNewUserAdded = false;
+      this.$validator.validateAll().then((result) => {
+      	if (result) {
+      		var formAction = e.target.action;
+      		axios.post(formAction,
+      		this.user)
+      		.then((response) => {
+      			this.isNewUserAdded = true;
+      			// window.location = response.data.redirect;
+      		})
+      		.catch((error) => {
+      			var errors = [];
+      			$.each(error.response.data.errors, function(fieldName, error)
+      			{
+      				errors.push(error[0]);
+      			});
+      			this.formErrors = errors;
+      			this.isNewUserAdded = false;
+      		});
+      	}
+      	event.preventDefault();
+      })
+    }
+  }
+};
 </script>

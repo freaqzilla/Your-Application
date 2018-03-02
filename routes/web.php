@@ -26,6 +26,6 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
         Route::get('/update-user/{id}', 'Admin\AdminController@showUser');
         Route::get('/get-user/{id}', 'Admin\AdminController@getUser');
-        Route::post('/update-user', 'Admin\AdminController@updateUser');
+        Route::post('/edit-user', 'Admin\AdminController@editUser');
     });
 });

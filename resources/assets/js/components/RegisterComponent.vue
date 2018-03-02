@@ -5,7 +5,7 @@
         <div v-if="isNewUserAdded" class="alert alert-success">
             User added successfully!
         </div>
-		<user-form>
+		<user-form :action="formAction" >
 			</user-form>
 	</div>
 </div>
@@ -21,6 +21,7 @@ import UserForm from '../components/user/UserForm'
 				formErrors: [],
 				isFormValid: false,
 				isNewUserAdded: false,
+				formAction: '/register',
 				user: {
 					first_name: null,
 					last_name: null,
