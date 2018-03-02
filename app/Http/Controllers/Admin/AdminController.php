@@ -32,7 +32,7 @@ class AdminController extends Controller
 
 	public function showUser($userId) {
 		$user = $this->user->find($userId)->load('roles');
-		return view('admin.editUser');
+		return view('admin.editUser', compact('userId'));
 	}
 
 	public function getUser($userId) {

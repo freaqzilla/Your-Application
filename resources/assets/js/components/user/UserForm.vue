@@ -80,8 +80,9 @@ export default {
     myObject: Object
   },
   created() {
+	  console.log(this.myObject);
     if (this.myObject) {
-      console.log(this.myObject.first_name);
+    //   console.log(this.myObject.first_name);
     }
   },
 

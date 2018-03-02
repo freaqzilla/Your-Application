@@ -11,15 +11,24 @@ import UserForm from '../../components/user/UserForm'
 export default {
   data() {
     return {
-      user: {
-      first_name: 'test',
-      last_name: 'test2'
-    },
+      user: null,
       formAction: '/admin/edit-user'
     }
   },
   computed: {
-          myObject() { return this.user; }
+    myObject: function() { 
+      var userToBeEdited;
+      userToBeEdited = this.fetchData();
+
+      }
+  },
+  methods: {
+          fetchData() {
+            axios.get('/admin/get-user/' + userId)
+                .then(response => {
+                    this.user = response.data;
+            });
+          }
       },
   components: {
     'user-form': UserForm
