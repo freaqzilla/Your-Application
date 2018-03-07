@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Jobs\SendVerificationEmail;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -21,7 +23,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -55,7 +57,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'last_name' => 'required|string|max:255',
-            'display_name' => 'required|string|max:255'
+            'display_name' => 'required|string|max:255',
         ]);
     }
 
@@ -71,10 +73,40 @@ class RegisterController extends Controller
             'name' => $data['first_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'email_token' => base64_encode($data['email']),
         ]);
 
         $user->roles()->attach(Role::where('name', 'super admin')->first());
 
         return $user;
+    }
+
+    /**
+     * Register new user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        dispatch(new SendVerificationEmail($user));
+        return view('verification');
+    }
+
+    /**
+     * Register new user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verify($token)
+    {
+        $user = User::where('email_token', $token)->first();
+        $user->verified = 1;
+        if ($user->save()) {
+            return view('emailconfirm', ['user' => $user]);
+        }
     }
 }

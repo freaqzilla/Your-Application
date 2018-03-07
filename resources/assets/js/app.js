@@ -21,6 +21,8 @@ Vue.component('admin-component', require('./components/admin/AdminComponent.vue'
 
 Vue.component('edit-user-component', require('./components/admin/EditUserComponent.vue'));
 
+Vue.component('manage-profile-component', require('./components/user/ManageProfileComponent.vue'));
+
 Vue.component('test-component', require('./components/TestComponent.vue'));
 
 Vue.component('register-component', require('./components/RegisterComponent.vue'));

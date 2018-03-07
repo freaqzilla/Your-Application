@@ -18,7 +18,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/user', 'User\UserController@index')->name('user');
 
 Route::middleware(['auth', 'role'])->group(function () {
     Route::prefix('admin')->group(function () {
@@ -28,4 +32,8 @@ Route::middleware(['auth', 'role'])->group(function () {
         Route::get('/get-user/{id}', 'Admin\AdminController@getUser');
         Route::post('/edit-user', 'Admin\AdminController@editUser');
     });
+});
+
+Route::group(['prefix' => 'user'], function () {
+    Route::post('/edit-profile', 'User\UserController@editProfile');
 });
