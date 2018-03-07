@@ -46,10 +46,8 @@ class UserController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ]);
-
-        // $imageName = 
-
         $imageExtension = $request->image->getClientOriginalExtension();
+        $imageName = uniqid() . '.' . $imageExtension;
 
         $request->image->move(public_path('images'), $imageName);
 

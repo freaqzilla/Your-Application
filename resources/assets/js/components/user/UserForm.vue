@@ -88,8 +88,6 @@ export default {
 
   methods: {
     registerUser: function(e) {
-      event.preventDefault();
-      return false;
       this.formErrors = [];
       this.isNewUserAdded = false;
       this.$validator.validateAll().then((result) => {
