@@ -12,24 +12,18 @@
 			<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
-					<div class="form-group" :class="{'input': true, 'has-error': errors.has('first_name') }">
-						<input type="text" name="first_name" v-validate="'required'" required minlength="3" v-model="user.first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
-						<span v-show="errors.has('first_name')" class="help-block">{{ errors.first('first_name') }}</span>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6">
-					<div class="form-group" :class="{'input': true, 'has-error': errors.has('last_name') }">
-						<input type="text" name="last_name" v-model="user.last_name" v-validate="'required'" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
-						<span v-show="errors.has('last_name')" class="help-block">{{ errors.first('last_name') }}</span>
+					<div class="form-group" :class="{'input': true, 'has-error': errors.has('name') }">
+						<input type="text" name="name" v-validate="'required'" required minlength="3" v-model="user.name" id="name" class="form-control input-lg" placeholder="First Name" tabindex="1">
+						<span v-show="errors.has('name')" class="help-block">{{ errors.first('name') }}</span>
 					</div>
 				</div>
 			</div>
-			<div class="form-group" :class="{'input': true, 'has-error': errors.has('display_name') }">
-				<input type="text" data-vv-as="Display Name" name="display_name" id="display_name" v-validate="'required'" v-model="user.display_name" class="form-control input-lg" placeholder="Display Name" tabindex="3">
-				<span v-show="errors.has('display_name')" class="help-block">{{ errors.first('display_name') }}</span>
+			<div class="form-group" :class="{'input': true, 'has-error': errors.has('address') }">
+				<input type="text" data-vv-as="Address" name="address" id="address" v-validate="'required'" v-model="user.address" class="form-control input-lg" placeholder="Address" tabindex="3">
+				<span v-show="errors.has('address')" class="help-block">{{ errors.first('address') }}</span>
 			</div>
 			<div class="form-group" :class="{'input': true, 'has-error': errors.has('email') }">
-				<input type="email" name="email" v-validate="'required|email'"  id="email" class="form-control input-lg" v-model="user.email" placeholder="Email Address" tabindex="4">
+				<input disabled type="email" name="email" v-validate="'required|email'"  id="email" class="form-control input-lg" v-model="user.email" placeholder="Email Address" tabindex="4">
 				<span v-show="errors.has('email')" class="help-block">{{ errors.first('email') }}</span>
 			</div>
 			<file-upload @onFileUpload="handleFileAfterUpload"></file-upload>
@@ -46,22 +40,17 @@
 export default {
   data() {
     return {
-      searchText: "",
 			user: {},
 			image: {},
-      selectedOption: null,
-      open: false,
-      formErrors: [],
-      highlightIndex: 0,
-      lastSearchText: ""
+      formErrors: []
     };
   },
   created() {
+		this.fetchData();
 	},
 	components: {
     'file-upload': FileUpload
   },
-
   methods: {
     updateProfile: function(e) {
 			let formData = new FormData();
@@ -96,9 +85,18 @@ export default {
       	event.preventDefault();
       })
 		},
+		fetchData() {
+			axios.get('/user/get-user')
+					.then(response => {
+						if (response.data && response.data.success) {
+							this.user = response.data.user;
+						}
+						console.log(this.user);
+							// this.allUsers = response.data;
+			});
+		},
 		handleFileAfterUpload(file) {
-			this.image = file;
-			
+			this.image = file;	
 		}
   }
 };

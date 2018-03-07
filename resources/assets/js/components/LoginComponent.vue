@@ -1,14 +1,8 @@
 <template>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-    	 <!-- this will be displayed upon successful submission of form -->
-        <div v-if="isUserLoggedIn" class="alert alert-success">
-            User logged in successfully!
-        </div>
-    	<!--  prevent the page from refreshing after submission -->
 		<form role="form"  @submit.prevent="loginUser" action="/login" method="POST" novalidate>
 			<h2>Please Login</h2>
-			<!-- add Bootstrap .has-error if title field has errors -->
 			<div class="alert alert-danger" v-if="formErrors.length > 0">
 				<ul>
 					<li v-for="error in formErrors">{{ error }}</li>
@@ -67,7 +61,7 @@
     					this.user)
 						.then((response) => {
 							this.isUserLoggedIn = true;
-							window.location = response.data.redirect;
+							window.location = '/user/profile';
 						})
 						.catch((error) => {
 							var errors = [];

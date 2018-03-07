@@ -53,11 +53,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'last_name' => 'required|string|max:255',
-            'display_name' => 'required|string|max:255',
+            'password' => 'required|string|min:6|confirmed'
         ]);
     }
 
@@ -70,13 +68,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
-            'name' => $data['first_name'],
+            'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'email_token' => base64_encode($data['email']),
         ]);
-
-        $user->roles()->attach(Role::where('name', 'super admin')->first());
 
         return $user;
     }
@@ -90,9 +86,19 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        event(new Registered($user = $this->create($request->all())));
+        $user = $this->create($request->all());
+
+        // Dispatch event on new user registration 
+        event(new Registered($user));
+
+        // dispatch job to queue
         dispatch(new SendVerificationEmail($user));
-        return view('verification');
+
+        $response = [
+            'success' => true,
+            'message' => 'You have successfully registered. An email is sent to you for verification.'
+        ];
+        return response()->json($response);
     }
 
     /**
@@ -106,7 +112,7 @@ class RegisterController extends Controller
         $user = User::where('email_token', $token)->first();
         $user->verified = 1;
         if ($user->save()) {
-            return view('emailconfirm', ['user' => $user]);
+            return view('email.varified', ['user' => $user]);
         }
     }
 }

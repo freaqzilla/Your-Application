@@ -22,9 +22,7 @@ Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user', 'User\UserController@index')->name('user');
-
-Route::middleware(['auth', 'role'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', 'Admin\AdminController@index');
         Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
@@ -35,5 +33,7 @@ Route::middleware(['auth', 'role'])->group(function () {
 });
 
 Route::group(['prefix' => 'user'], function () {
+    Route::get('/profile', 'User\UserController@showProfile');
+    Route::get('/get-user', 'User\UserController@getUser');
     Route::post('/edit-profile', 'User\UserController@editProfile');
 });

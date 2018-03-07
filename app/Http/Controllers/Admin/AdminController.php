@@ -26,8 +26,6 @@ class AdminController extends Controller
 	public function getAllUsers() {
 		$allUsers = $this->user->all();
 		return $allUsers;
-		// return view('admin.users');
-		// abort(401, 'This action is not authorized.');
 	}
 
 	public function showUser($userId) {

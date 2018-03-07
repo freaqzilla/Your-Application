@@ -49,5 +49,12 @@ class CreateEmailAndModifyUsersTable extends Migration
                 $table->string('profile_image')->nullable();
             });
         }
+
+        // Add column for address
+        if (!Schema::hasColumn('users', 'address')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('address')->nullable();
+            });
+        }
     }
 }

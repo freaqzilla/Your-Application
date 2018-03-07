@@ -29,6 +29,50 @@ class UserController extends Controller
      */
     public function index()
     {
+
+    }
+
+    /**
+     * Get User data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUser(Request $request)
+    {
+        $userData = [
+            'name' => '',
+            'email' => '',
+            'address' => '',
+            'profile_image' => ''
+        ];
+
+        $response = [
+            'success' => false,
+            'user' => $userData
+        ];
+
+        $user = $request->user();
+        
+        if ($user) {
+            foreach($userData as $key => $value) {
+                $userData[$key] = $user[$key];
+            }
+            $response = [
+                'success' => true,
+                'user' => $userData
+            ];
+        }
+        
+        return response()->json($response);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showProfile()
+    {
         return view('user.manageProfile');
     }
 
