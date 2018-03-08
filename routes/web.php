@@ -20,6 +20,8 @@ Auth::routes();
 
 // Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
 
+Route::get('user/profile', 'User\UserController@showProfile')->name('profile');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Route::middleware(['auth'])->group(function () {
@@ -33,7 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 // });
 
 Route::group(['prefix' => 'user'], function () {
-    Route::get('/profile', 'User\UserController@showProfile');
+    // Route::get('/profile', 'User\UserController@showProfile');
     Route::get('/get-user', 'User\UserController@getUser');
     Route::post('/edit-profile', 'User\UserController@editProfile');
 });
