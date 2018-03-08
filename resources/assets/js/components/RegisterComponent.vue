@@ -17,7 +17,7 @@ export default {
 		return {
 			formErrors: [],
 			isFormValid: false,		
-			formAction: '/register',
+			formAction: '/api/register',
 			user: {
 				name: null,
 				email: null,

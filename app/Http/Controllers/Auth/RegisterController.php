@@ -94,11 +94,15 @@ class RegisterController extends Controller
         // dispatch job to queue
         dispatch(new SendVerificationEmail($user));
 
+        // generate api token
+        $user->generateApiToken();
+
         $response = [
             'success' => true,
+            'data' => $user->toArray(),
             'message' => 'You have successfully registered. An email is sent to you for verification.'
         ];
-        return response()->json($response);
+        return response()->json($response, 201);
     }
 
     /**
@@ -114,5 +118,12 @@ class RegisterController extends Controller
         if ($user->save()) {
             return view('email.varified', ['user' => $user]);
         }
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        $user->generateToken();
+
+        return response()->json(['data' => $user->toArray()], 201);
     }
 }

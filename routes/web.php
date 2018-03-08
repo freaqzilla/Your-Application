@@ -18,19 +18,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+// Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::prefix('admin')->group(function () {
-        Route::get('/', 'Admin\AdminController@index');
-        Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
-        Route::get('/update-user/{id}', 'Admin\AdminController@showUser');
-        Route::get('/get-user/{id}', 'Admin\AdminController@getUser');
-        Route::post('/edit-user', 'Admin\AdminController@editUser');
-    });
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::prefix('admin')->group(function () {
+//         Route::get('/', 'Admin\AdminController@index');
+//         Route::get('/get-all-users', 'Admin\AdminController@getAllUsers');
+//         Route::get('/update-user/{id}', 'Admin\AdminController@showUser');
+//         Route::get('/get-user/{id}', 'Admin\AdminController@getUser');
+//         Route::post('/edit-user', 'Admin\AdminController@editUser');
+//     });
+// });
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('/profile', 'User\UserController@showProfile');

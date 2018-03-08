@@ -73,6 +73,8 @@ class UserController extends Controller
      */
     public function showProfile()
     {
+        var_dump('czxc');
+        exit;
         return view('user.manageProfile');
     }
 

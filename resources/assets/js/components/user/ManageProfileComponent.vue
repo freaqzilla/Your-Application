@@ -1,6 +1,6 @@
 <template>
 <!--  prevent the page from refreshing after submission -->
-		<form role="form"  @submit="updateProfile" method="POST" action="user/edit-profile" novalidate>
+		<form role="form"  @submit="updateProfile" method="POST" action="/user/edit-profile" novalidate>
 		<input type="hidden" name="_token" :value="$csrf_token">
 			<h2>Manage Profile <small></small></h2>
 			<!-- add Bootstrap .has-error if title field has errors -->

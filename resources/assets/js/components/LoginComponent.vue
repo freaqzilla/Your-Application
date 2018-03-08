@@ -1,7 +1,7 @@
 <template>
 <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-		<form role="form"  @submit.prevent="loginUser" action="/login" method="POST" novalidate>
+		<form role="form"  @submit.prevent="loginUser" action="/api/login" method="POST" novalidate>
 			<h2>Please Login</h2>
 			<div class="alert alert-danger" v-if="formErrors.length > 0">
 				<ul>
@@ -61,7 +61,7 @@
     					this.user)
 						.then((response) => {
 							this.isUserLoggedIn = true;
-							window.location = '/user/profile';
+							window.location = '/api/user';
 						})
 						.catch((error) => {
 							var errors = [];
