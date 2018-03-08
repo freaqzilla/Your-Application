@@ -1,6 +1,6 @@
 <template>
 <!--  prevent the page from refreshing after submission -->
-		<form role="form"  @submit="updateProfile" method="POST" action="user/edit-profile" novalidate>
+		<form role="form"  @submit="updateProfile" method="POST" action="/user/edit-profile" novalidate>
 		<input type="hidden" name="_token" :value="$csrf_token">
 			<h2>Manage Profile <small></small></h2>
 			<!-- add Bootstrap .has-error if title field has errors -->
@@ -9,6 +9,8 @@
 					<li v-for="error in formErrors">{{ error }}</li>
 				</ul>
 			</div>
+			<hr class="colorgraph">
+			<img alt="No profile Photo" width="200" height="200" v-bind:src="profileImage"/>
 			<hr class="colorgraph">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6">
@@ -23,9 +25,10 @@
 				<span v-show="errors.has('address')" class="help-block">{{ errors.first('address') }}</span>
 			</div>
 			<div class="form-group" :class="{'input': true, 'has-error': errors.has('email') }">
-				<input disabled type="email" name="email" v-validate="'required|email'"  id="email" class="form-control input-lg" v-model="user.email" placeholder="Email Address" tabindex="4">
+				<span id="email">{{user.email}}</span>
 				<span v-show="errors.has('email')" class="help-block">{{ errors.first('email') }}</span>
 			</div>
+			
 			<file-upload @onFileUpload="handleFileAfterUpload"></file-upload>
 			<hr class="colorgraph">
 			<div class="row">
@@ -41,6 +44,7 @@ export default {
   data() {
     return {
 			user: {},
+			profileImage: '',
 			image: {},
       formErrors: []
     };
@@ -56,7 +60,7 @@ export default {
 			let formData = new FormData();
 			var userDetails = JSON.stringify(this.user);
 			formData.append('image', this.image);
-			formData.append('data', userDetails);
+			formData.append('user', userDetails);
       this.formErrors = [];
       this.isNewUserAdded = false;
       this.$validator.validateAll().then((result) => {
@@ -64,12 +68,13 @@ export default {
 					const config = {
 						headers: { 'Content-Type': 'multipart/form-data' }
         	}
-					console.log(this.user.image);
+					
       		var formAction = e.target.action;
       		axios.post(formAction,
       		formData, config)
       		.then((response) => {
       			this.isNewUserAdded = true;
+console.log(response.data);
       			// window.location = response.data.redirect;
       		})
       		.catch((error) => {
@@ -90,6 +95,7 @@ export default {
 					.then(response => {
 						if (response.data && response.data.success) {
 							this.user = response.data.user;
+							this.profileImage = '/images/' + this.user.profile_image;
 						}
 						console.log(this.user);
 							// this.allUsers = response.data;

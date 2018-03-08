@@ -39,16 +39,12 @@ class UserController extends Controller
      */
     public function getUser(Request $request)
     {
+        $success = false;
         $userData = [
             'name' => '',
             'email' => '',
             'address' => '',
             'profile_image' => ''
-        ];
-
-        $response = [
-            'success' => false,
-            'user' => $userData
         ];
 
         $user = $request->user();
@@ -57,11 +53,12 @@ class UserController extends Controller
             foreach($userData as $key => $value) {
                 $userData[$key] = $user[$key];
             }
-            $response = [
-                'success' => true,
-                'user' => $userData
-            ];
+            $success = true;
         }
+        $response = [
+            'success' => $success,
+            'user' => $userData
+        ];
         
         return response()->json($response);
     }
@@ -83,20 +80,43 @@ class UserController extends Controller
      */
     public function editProfile(Request $request)
     {
+        $imageUploaded = false;
+        if ($request['user']) {
+            $userData = json_decode($request['user'], true);
+            foreach($userData as $key => $data) {
+                $request[$key] = $data;
+            }
+        }
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255'
+        ];
+
+        if ($request->hasFile('image')) {
+            $rules['image'] = 'image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+            $imageUploaded = true;
+        }
+
+        $request->validate($rules);
+
         $user = $request->user();
+        $user->name = $request['name'];
+        $user->address = $request['address'];
 
-        $request->validate([
-
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
-        ]);
-        $imageExtension = $request->image->getClientOriginalExtension();
-        $imageName = uniqid() . '.' . $imageExtension;
-
-        $request->image->move(public_path('images'), $imageName);
-
-        $user->profile_image = $imageName;
+        if ($imageUploaded) {
+            $imageExtension = $request->image->getClientOriginalExtension();
+            $imageName = uniqid() . '.' . $imageExtension;
+            $request->image->move(public_path('images'), $imageName);
+            $user->profile_image = $imageName;
+        }
+        
         $saveResponse = $user->save();
+
+        $response = [
+            'success' => $saveResponse,
+            'message' => 'Profile updated successfully.'
+        ];
 
         return response()->json($saveResponse);
 

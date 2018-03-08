@@ -61,7 +61,7 @@
     					this.user)
 						.then((response) => {
 							this.isUserLoggedIn = true;
-							window.location = '/user/profile';
+							window.location = 'user/profile';
 						})
 						.catch((error) => {
 							var errors = [];
